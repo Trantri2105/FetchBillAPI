@@ -41,4 +41,4 @@ select transaction_id, purchase_date_time, camera_sn, package_type
 
   - `start`: Ngày và giờ bắt đầu theo format `dd-MM-yyyy hh:mm:ss`. Ví dụ: `30-10-2023 00:00:00`
   - `end` : Ngày và giờ kết thúc theo format `dd-MM-yyyy hh:mm:ss`. Example: `29-07-2024 00:00:00`
-  - `timeZone`: Time zone theo UTC. Ví dụ : `-7` is `UTC-7` and `7` is `UTC+7`
+  - `timeZone`: Time zone theo UTC. Ví dụ : `-7` là `UTC-7` và `7` là `UTC+7`
