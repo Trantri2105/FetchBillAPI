@@ -32,7 +32,7 @@ func (s service) GetCamBill(start int64, end int64) ([]model.CamBill, error) {
 }
 
 func saveBills(camBills []model.CamBill, start int64, end int64) error {
-	file, err := os.Create(fmt.Sprintf("./csv/queryResultFrom%sTo%s.csv", time.Unix(start, 0).UTC().Format("02-01-2006T15_04_05"), time.Unix(end, 0).UTC().Format("02-01-2006T15_04_05")))
+	file, err := os.Create(fmt.Sprintf("./csv/queryResultFrom%sTo%s.csv", time.Unix(start, 0).UTC().Format("20060102_150405"), time.Unix(end, 0).UTC().Format("20060102_150405")))
 	if err != nil {
 		return err
 	}
@@ -50,7 +50,7 @@ func saveBills(camBills []model.CamBill, start int64, end int64) error {
 		row := []string{bill.TransactionID, strconv.Itoa(int(bill.PurchaseDateTime)), bill.CameraSn, bill.PackageType}
 		err = writer.Write(row)
 		if err != nil {
-			return nil
+			return err
 		}
 	}
 	return nil
