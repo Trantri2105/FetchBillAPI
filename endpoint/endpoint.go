@@ -7,7 +7,6 @@ import (
 	"context"
 	"errors"
 	"log"
-	"strconv"
 	"time"
 
 	"github.com/go-kit/kit/endpoint"
@@ -28,28 +27,24 @@ func (b billEndpoint) GetCamBillEndpoint() endpoint.Endpoint {
 		validate := validator.New()
 		err := validate.Struct(r)
 		if err != nil {
-			return nil, errors.New("start or end date or time zone is missing")
+			return nil, errors.New("start or end date is missing")
 		}
-		start, err := time.Parse("02-01-2006 15:04:05", r.Start)
+		local, err := time.LoadLocation("Local")
 		if err != nil {
 			log.Println("Endpoint error : " + err.Error())
 			return nil, err
 		}
-		var timeZone int
-		timeZone, err = strconv.Atoi(r.TimeZone)
+		start, err := time.ParseInLocation("02-01-2006 15:04:05", r.Start, local)
 		if err != nil {
 			log.Println("Endpoint error : " + err.Error())
 			return nil, err
 		}
-		timeZone = -timeZone
-		start = start.Add(time.Duration(timeZone) * time.Hour)
 		var end time.Time
-		end, err = time.Parse("02-01-2006 15:04:05", r.End)
+		end, err = time.ParseInLocation("02-01-2006 15:04:05", r.End, local)
 		if err != nil {
 			log.Println("Endpoint error : " + err.Error())
 			return nil, err
 		}
-		end = end.Add(time.Duration(timeZone) * time.Hour)
 		var camBills []model.CamBill
 		camBills, err = b.service.GetCamBill(start.Unix(), end.Unix())
 		if err != nil {
